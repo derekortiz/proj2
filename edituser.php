@@ -22,7 +22,7 @@ rel='stylesheet' type="text/css">
 <body>
 <div id="nav">
   <div id="navcontent">
-    <a href=""><div>Schedule</div></a>
+    <a href="schedule.php"><div>Schedule</div></a>
     <a href="account.php"><div>Account</div></a>
     <?PHP if($_SESSION['isAdmin']) {
       echo '<a href="admin.php"><div>Admin</div></a>';

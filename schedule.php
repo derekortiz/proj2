@@ -28,16 +28,24 @@ rel='stylesheet' type="text/css">
   </div>
 </div> <!--End Navigation -->
 <div id='content'>
-	Edit Student User Information
+	<h2>Planned Classes</h3>
+  <!-- Begin Schedule Output -->
+  <form action="" method="post">
 	<table>
 	  <col width="30px">
 	  <col width="250px">
 	  <col width="100px">
-	  <col width="200px">
-	  <tr><th>course#</th><th>Course Name</th><th>SequenceID</th><th>seats</th><th>MaxSeats</th></tr>
-    <?PHP all_users_table(); ?>
-	</table>
-  <a class='resetPassword' href='adduser.php'>Add User</a>
+	  <col width="100px">
+    <col width="100px">
+	  <tr><th>course#</th><th>Course</th><th>Name</th><th>SequenceID</th><th>seats</th><th>MaxSeats</th><th>Remove Class</th></tr>
+  
+    <?PHP //print_schedule(); ?>
+	
+    </table>
+  </form>
+  <!-- End Schedule Output -->
+
+  <a class='resetPassword' href='addCourse.php'>Add a course</a>
 </div> <!-- End Content-->
 <hr>
 </body>

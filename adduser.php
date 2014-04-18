@@ -21,7 +21,7 @@ rel='stylesheet' type="text/css">
 <body>
 <div id="nav">
   <div id="navcontent">
-    <a href=""><div>Schedule</div></a>
+    <a href="schedule.php"><div>Schedule</div></a>
     <a href="account.php"><div>Account</div></a>
     <?PHP if($_SESSION['isAdmin']) {
       echo '<a href="admin.php"><div>Admin</div></a>';
@@ -31,7 +31,7 @@ rel='stylesheet' type="text/css">
 </div> <!--End Navigation -->
 <div id='content'>
 	Add a Student User
-  <form action="adminAdd.php"  method="post">
+  <form action="adminAddUserHandler.php"  method="post">
 	<table>
 	  <col width="100px">
 	  <col width="250px">

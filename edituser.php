@@ -13,6 +13,7 @@ if(!isset($_SESSION['username']) || $_SESSION['isAdmin']!=1) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Roboto'
 rel='stylesheet' type="text/css">
+<script type="text/javascript" src="./activepage.js"></script>
 
 <link rel="stylesheet" type="text/css" href="./login.css"
 </head>

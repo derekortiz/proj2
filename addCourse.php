@@ -33,24 +33,20 @@ rel='stylesheet' type="text/css">
 	<h2>Planned Classes</h3>
   <!-- Begin Schedule Output -->
   <form action="" method="post">
-	<table width="725px">
+	<table>
 	  <col width="30px">
 	  <col width="250px">
-	  <col width="125px">
-	  <col width="75px">
-    <col width="75px">
-    <col width="25px">
-	  <tr><th>course#</th><th>Course Name</th><th>SequenceID</th><th>seats</th><th>MaxSeats</th><th>Remove Class</th></tr>
+	  <col width="100px">
+	  <col width="100px">
+    <col width="100px">
+	  <tr><th>course#</th><th>CourseName</th><th>SequenceID</th><th>seats</th>
+    <th>MaxSeats</th><th>Schedule Class</th></tr>
   
-    <?PHP echo
-      print_schedule($_SESSION['stuNum']); ?>
+    <?PHP make_course_list(); ?>
 	
-    </table>
+  </table>
   </form>
   <!-- End Schedule Output -->
-
-  <a class='resetPassword' href='addCourse.php'>Add a course</a>
-</div> <!-- End Content-->
-<hr>
+</div>
 </body>
 </html>

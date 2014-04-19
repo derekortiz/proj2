@@ -37,6 +37,7 @@ define("student_user_update_qry","update Student_User
     where StuNum='%s' AND LoginID='%s';");
 
 //reads
+define("student_user_qry","Select * FROM Student_User WHERE LoginID='%s';");
 define("user_read_qry", 
     "select S.stuNum,stuName,U.loginID,password
     FROM User U,Student_User SU, Student S
@@ -192,7 +193,7 @@ function all_users_table() {
 
 function edit_user_table($sNum,$user) {
   	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
-	$query = sprintf(one_user_qry,$sNum,$user);
+ 	$query = sprintf(one_user_qry,$sNum,$user);
 	$result = mysqli_query($connection, $query);
 	if(!$result) { 
 		die("Could not read Users: " . mysqli_error($connection));
@@ -230,5 +231,16 @@ function update_password($userID, $newPassword) {
 	return $result;
 }
 
-
+function get_stuNum($userID) {
+  $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
+ 	$query = sprintf(student_user_qry,$userID);
+	$result = mysqli_query($connection, $query);
+	if(!$result) { 
+		return NULL;
+  }
+  $row = $result->fetch_row();
+  $retVal = $row[0];
+  mysqli_close($connection);
+  return $retVal;
+}
 ?>

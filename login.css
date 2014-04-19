@@ -143,13 +143,17 @@ a div{
 	border: 1px Solid black;
 	border-collapse:collapse;
 }
-#oontent th {
+th {
   background-color:#CCCCCC;
 }
-
-#content tr:nth-child(odd) {
+#content table tr td:nth-child(6) {
+  text-align:center;
+}
+tr:nth-child(odd)  td {
   background-color:#B3DAE3;
 }
+
+
 #content table{
 margin-top:20px;
 margin-left:auto;
@@ -216,9 +220,10 @@ width: 800px;
   cursor: pointer;
   border:1px solid black;
   border-radius: 5px;
-  width:9%;
+  width:15px;
   background: #0080FF;
   padding:1px;
+  padding-right:2px;
   margin-right:0px;
   margin-left:0px;
   background-image: linear-gradient(#FF0000, #960000);

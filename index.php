@@ -4,6 +4,7 @@ session_start();
 if(isset($_GET['logout']) AND $_GET['logout']==1) {
   unset($_SESSION['username']);
   unset($_SESSION['isAdmin']);
+  unset($_SESSION['stuNum']);
   session_regenerate_id();
 }
 else if(isset($_SESSION['isAdmin']) AND isset($_SESSION['username'])) {
@@ -40,9 +41,7 @@ rel='stylesheet' type="text/css">
   </div>
 
   </form>
-  <?PHP 
-  /*echo sprintf('Session attempts: %s, Session ID:%d',
-    $_SESSION['username'],session_id());*/
+  <?PHP
   if ($_GET['wrong'] == 1 ) {
     echo '<p>Incorrect Username or Password</p>';
   }

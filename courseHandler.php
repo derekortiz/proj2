@@ -8,17 +8,19 @@ if(!isset($_SESSION['username'])) {
 
 // we get the action type and course number through url parameter passing
 // get student number from session variable set at login
-if(isset($_GET['course'])) {
-  $course=$_GET['course'];
+if(isset($_GET['courseNo'])) {
+  $course=$_GET['courseNo'];
 }
 if(isset($_GET['action'])) {
   $action=$_GET['action'];
 }
 
-if(!isset($_GET['action']) || !isset($_GET['course'])) {
-  echo "Missing action parameters";
+if(!isset($_GET['action']) || !isset($_GET['courseNo'])) {
+  echo sprintf("Missing action parameters courseNo:%s
+      action:%s",$course,$action);
   exit;
 }
+
 
 switch($action) {
   case "add":
@@ -31,8 +33,8 @@ switch($action) {
     break;
 }
 
-header("http://cse.msu.edu/~ortizder/proj2/")
-
+header("Location: http://cse.msu.edu/~ortizder/proj2/schedule.php");
+exit;
 
 
 // Need a function to remove a course from a students schedule

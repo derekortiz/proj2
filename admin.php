@@ -34,7 +34,7 @@ rel='stylesheet' type="text/css">
 	Edit Student User Information
 	<table>
 	  <col width="30px">
-	  <col width="250px">
+	  <col width="200px">
 	  <col width="100px">
 	  <col width="200px">
 	  <tr><th>Student#</th><th>Name</th><th>User Id</th><th>Password</th><th>Options</th></tr>

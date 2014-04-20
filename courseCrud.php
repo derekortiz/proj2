@@ -21,7 +21,7 @@ define("schedule_row", '<tr>
   <td>%s</td>
 	<td>
 	<a class="deleteUser"
-  href="courseHandler.php?courseNo=%1$s">X</a>
+  href="courseHandler.php?courseNo=%1$s&action=remove">X</a>
   </td>
 	</tr>'
 );
@@ -34,7 +34,7 @@ define("course_list_row", '<tr>
   <td>%s</td>
 	<td horizontal-align="center">
 	<a class="resetPassword"
-  href="courseHandler.php?courseNo=%1$s">Schedule Course</a>
+  href="courseHandler.php?courseNo=%1$s&action=add">Schedule Course</a>
 	</td>
 	</tr>'
 );
@@ -76,3 +76,10 @@ function make_course_list() {
 }
 
 
+
+
+
+
+
+
+?>

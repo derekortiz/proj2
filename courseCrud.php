@@ -10,6 +10,11 @@ define("course_qry", "SELECT *
 
 // course list queries
 
+define("add_course_qry", "INSERT INTO Schedule
+	Values('%s', '%s', NULL, 1)");
+
+define("remove_course_qry", "DELETE FROM Schedule
+	WHERE CourseNo='%s' AND StuNum='%s';");
 
 
 // form genertaion templates for schedulle pages
@@ -73,6 +78,41 @@ function make_course_list() {
     echo sprintf(course_list_row,$row[0],$row[1],$row[2],$row[3],$row[4]);
   } 
   return;
+}
+
+function add_course( $sNum, $cNo)
+{
+	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
+	/*$result1 = mysqli_query($connection, "start transaction;");
+	$lockResult = mysqli_query($connection, "LOCK TABLES Schedule WRITE;");
+	if( !$lockResult )
+	{
+		$result3 = mysqli_query($connection, "commit;");
+		die("Could not lock table");
+	}*/
+	$query = sprintf(add_course_qry, $cNo, $sNum );
+	$result2 = mysqli_query($connection, $query);
+	if( !$result2 )
+	{
+		//$result3 = mysqli_query($connection, "rollback;");
+		//$result3 = mysqli_query($connection, "commit;");
+		die("Could not add course to schedule: " . mysqli_error($connection));
+	}
+	//$result3 = mysqli_query($connection, "commit;");
+	return;
+}
+
+function remove_course( $sNum, $cNo)
+{
+	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
+	$query = sprintf(remove_course_qry, $cNo, $sNum);
+	$result = mysqli_query($connection, $query);
+	if( !$result )
+	{
+		die("Could not remove course from schedule: " . mysqli_error($connection));
+	}
+	return;
+	
 }
 
 

@@ -1,6 +1,6 @@
 <?php session_start(); 
 include_once './userCrud.php';
-include_once './courseCrud.php':
+include_once './courseCrud.php';
 
 if(!isset($_SESSION['username'])) {
   header('Location: http://www.cse.msu.edu/~ortizder/proj2/');
@@ -22,14 +22,16 @@ if(!isset($_GET['action']) || !isset($_GET['course'])) {
 
 switch($action) {
   case "add":
+  add_Course($_SESSION['stuNum'], $course);
     break;
   case "remove":
+  remove_course($_SESSION['stuNum'], $course);
     break;
   default:
     break;
 }
 
-header("http://cse.msu.edu/~ortizder/proj2/schedule.php")
+header("http://cse.msu.edu/~ortizder/proj2/")
 
 
 

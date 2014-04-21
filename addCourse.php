@@ -30,7 +30,7 @@ rel='stylesheet' type="text/css">
   </div>
 </div> <!--End Navigation -->
 <div id='content'>
-	<h2>Planned Classes</h3>
+	<h2>Course List</h3>
   <!-- Begin Schedule Output -->
   <form action="" method="post">
 	<table>
@@ -42,7 +42,7 @@ rel='stylesheet' type="text/css">
 	  <tr><th>course#</th><th>CourseName</th><th>SequenceID</th><th>seats</th>
     <th>MaxSeats</th><th>Schedule Class</th></tr>
   
-    <?PHP make_course_list(); ?>
+    <?PHP make_course_list($_SESSION['stuNum']); ?>
 	
   </table>
   </form>

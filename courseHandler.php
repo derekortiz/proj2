@@ -24,16 +24,16 @@ if(!isset($_GET['action']) || !isset($_GET['courseNo'])) {
 
 switch($action) {
   case "add":
-  add_Course($_SESSION['stuNum'], $course);
+    add_Course($_SESSION['stuNum'], $course);
     break;
   case "remove":
-  remove_course($_SESSION['stuNum'], $course);
+    remove_course($_SESSION['stuNum'], $course);
     break;
   default:
     break;
 }
 
-header("Location: http://cse.msu.edu/~ortizder/proj2/schedule.php");
+header('Location: http://www.cse.msu.edu/~ortizder/proj2/schedule.php');
 exit;
 
 

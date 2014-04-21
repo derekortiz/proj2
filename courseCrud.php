@@ -6,7 +6,8 @@ define("student_schedule_qry", "SELECT *
     WHERE isCurrent=1 AND StuNum='%s' AND c.courseNo=s.CourseNo;");
 
 define("course_qry", "SELECT *
-    FROM Course");
+    FROM Course where courseNo NOT IN (SELECT CourseNo FROM Schedule
+      WHERE StuNum=%s);");
 
 // course list queries
 
@@ -68,7 +69,7 @@ function print_schedule($sNum) {
   return;
 }
 
-function make_course_list() {
+function make_course_list($sNum) {
   $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or
     die(mysql_error());
   $query = sprintf(course_qry,$sNum);
@@ -83,23 +84,37 @@ function make_course_list() {
 function add_course( $sNum, $cNo)
 {
 	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
-	/*$result1 = mysqli_query($connection, "start transaction;");
-	$lockResult = mysqli_query($connection, "LOCK TABLES Schedule WRITE;");
+	$result1 = mysqli_query($connection, "start transaction;");
+	$lockResult = mysqli_query($connection, 
+      sprintf("SELECT * FROM Course c WHERE courseNo=%s LOCK IN SHARE MODE;",
+        $cNo));
+  // still able to read values from locked table
+  $row = $lockResult->fetch_row();
+  //unsucsessful lock
 	if( !$lockResult )
 	{
-		$result3 = mysqli_query($connection, "commit;");
+		$result3 = mysqli_query($connection, "rollback;");
 		die("Could not lock table");
-	}*/
+	} 
+  // check if class is full
+  else if ($row[3]>=$row[4]) {
+    die("The class you're trying to enroll in is full");
+  }
+  // if all good add course
 	$query = sprintf(add_course_qry, $cNo, $sNum );
 	$result2 = mysqli_query($connection, $query);
+
+  // rollback if issues
 	if( !$result2 )
 	{
-		//$result3 = mysqli_query($connection, "rollback;");
-		//$result3 = mysqli_query($connection, "commit;");
-		die("Could not add course to schedule: " . mysqli_error($connection));
+    $error = mysqli_error($connection);
+		$result3 = mysqli_query($connection, "rollback;");
+		die("Could not add course to schedule: " . $error);
 	}
-	//$result3 = mysqli_query($connection, "commit;");
-	return;
+
+  // otherwise commit changes
+	$result3 = mysqli_query($connection, "commit;");
+	return TRUE;
 }
 
 function remove_course( $sNum, $cNo)

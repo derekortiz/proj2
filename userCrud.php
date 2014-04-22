@@ -115,20 +115,29 @@ function add_student_user($sNum, $name, $login, $pass, $isAdmin) {
 function update_student_user($sNum,$name,$login,$pass,$oldLogin,$oldsNum){
 	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
   //update student then user first
+  $startTrans = mysqli_query($connection, "start transaction;");
+  $lockRows =  mysqli_query($connection, "select stuNum,stuName,loginID,password
+    FROM User, Student WHERE stuNum='%s' AND loginID='%s';");
+  if( !lockRows ) {
+    die("User rows could not be locked");
+  }
+
   $query1 = sprintf(user_update_qry, $login,$pass,$oldLogin);
 	$result1 = mysqli_query($connection, $query1);
 	if(!$result1) { 
-		die("2Could not update User: " . mysqli_error($connection));
+    $rollback = mysqli_query($connection, "rollback;");
+		die("Could not update User: " . mysqli_error($connection));
   }
   
   $query2 = sprintf(student_update_qry,$sNum,$name,$oldsNum);
 	$result2 = mysqli_query($connection, $query2);
 	if(!$result2) { 
-    die("3Could not update User: " . mysqli_error($connection));
+    $rollback = mysqli_query($connection, "rollback;");
+    die("Could not update User: " . mysqli_error($connection));
   }
 
-  //continue with update on student user table
-
+  // if all good commit changes
+  $commit = mysqli_query($connection, "commit;");
 
 	mysqli_close($connection);
 	return $retVal;

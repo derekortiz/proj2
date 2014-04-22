@@ -99,12 +99,14 @@ function add_course( $sNum, $cNo)
 	$preRequisites = mysqli_query($connection, sprintf(check_prereq_qry, $cNo, $cNo, $sNum));
 	
 	// Still have pre-requisites they need to take
-	if( $preRequisites )
+	if( mysqli_num_rows($preRequisites)>0 )
 	{
-		echo "The following prerequisites must be taken first: \n";
+		echo "The following prerequisites must be taken first: <br>";
 		while($row = $preRequisites->fetch_row() ) {
-		echo $row[0] . ",";
+		echo $row[0] . "<br>";
 		}
+    // end here after outputting necessary prereqs
+    die();
 	}
 		
 	$lockResult = mysqli_query($connection, 

@@ -16,6 +16,14 @@ define("add_course_qry", "INSERT INTO Schedule
 
 define("remove_course_qry", "DELETE FROM Schedule
 	WHERE CourseNo='%s' AND StuNum='%s';");
+	
+// pre-req check queries
+
+define("check_prereq_qry", "SELECT p.requisiteCourseNo
+		FROM Prerequisite p
+		WHERE p.CourseNo = '%s' AND p.requisiteCourseNo NOT IN( Select pre.requisiteCourseNo
+		FROM Prerequisite pre, Schedule s
+		WHERE pre.CourseNo = '%s' AND s.StuNum = '%s' AND pre.requisiteCourseNo = s.CourseNo) LOCK IN SHARE MODE;");
 
 
 // form genertaion templates for schedulle pages
@@ -85,6 +93,20 @@ function add_course( $sNum, $cNo)
 {
 	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
 	$result1 = mysqli_query($connection, "start transaction;");
+	
+	/* Here, before we lock the schedule table, check for pre-reqs, and make
+	sure the student has taken all of the necessary pre-reqs*/
+	$preRequisites = mysqli_query($connection, sprintf(check_prereq_qry, $cNo, $cNo, $sNum));
+	
+	// Still have pre-requisites they need to take
+	if( $preRequisites )
+	{
+		echo "The following prerequisites must be taken first: \n";
+		while($row = $preRequisites->fetch_row() ) {
+		echo $row[0] . ",";
+		}
+	}
+		
 	$lockResult = mysqli_query($connection, 
       sprintf("SELECT * FROM Course c WHERE courseNo=%s LOCK IN SHARE MODE;",
         $cNo));

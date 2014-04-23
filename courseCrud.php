@@ -3,7 +3,8 @@
 // schedule query definitions
 define("student_schedule_qry", "SELECT *
     FROM Course c,Schedule s 
-    WHERE isCurrent=1 AND StuNum='%s' AND c.courseNo=s.CourseNo;");
+    WHERE isCurrent=1 AND StuNum='%s' AND c.courseNo=s.CourseNo AND
+    c.sequenceID=s.SequenceID;");
 
 define("course_qry", "SELECT *
     FROM Course where courseNo NOT IN (SELECT CourseNo FROM Schedule
@@ -12,7 +13,7 @@ define("course_qry", "SELECT *
 // course list queries
 
 define("add_course_qry", "INSERT INTO Schedule
-	Values('%s', '%s', NULL, 1)");
+	Values('%s', '%s', NULL, 1, '%s')");
 
 define("remove_course_qry", "DELETE FROM Schedule
 	WHERE CourseNo='%s' AND StuNum='%s';");
@@ -46,9 +47,10 @@ define("course_list_row", '<tr>
 	<td>%s</td>
 	<td>%s</td>
   <td>%s</td>
+  <td>%s</td>
 	<td horizontal-align="center">
 	<a class="resetPassword"
-  href="courseHandler.php?courseNo=%1$s&action=add">Schedule Course</a>
+  href="courseHandler.php?courseNo=%1$s&action=add&seqID=%3$s">Schedule Course</a>
 	</td>
 	</tr>'
 );
@@ -71,7 +73,7 @@ function print_schedule($sNum) {
      <p class='error'> Not yet enrolled in any courses</p> ".$row[0];
   }
   while($row) {
-    echo sprintf(schedule_row,$row[0],$row[1],$row[2],$row[3],$row[4]);
+    echo sprintf(schedule_row,$row[0],$row[1],$row[2],$row[4],$row[3]);
     $row= $result->fetch_row();
   } 
   return;
@@ -84,12 +86,13 @@ function make_course_list($sNum) {
   $result= mysqli_query($connection, $query);
 
   while($row=$result->fetch_row()) {
-    echo sprintf(course_list_row,$row[0],$row[1],$row[2],$row[3],$row[4]);
+    echo sprintf(course_list_row,$row[0],$row[1],$row[2],$row[4],$row[3],
+        $row[5]);
   } 
   return;
 }
 
-function add_course( $sNum, $cNo)
+function add_course( $sNum, $cNo, $seqID)
 {
 	$connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME) or die(mysql_error());
 	$result1 = mysqli_query($connection, "start transaction;");
@@ -110,8 +113,8 @@ function add_course( $sNum, $cNo)
 	}
 		
 	$lockResult = mysqli_query($connection, 
-      sprintf("SELECT * FROM Course c WHERE courseNo=%s LOCK IN SHARE MODE;",
-        $cNo));
+      sprintf("SELECT * FROM Course c WHERE courseNo=%s AND sequenceID=%s
+        LOCK IN SHARE MODE;", $cNo, $seqID));
   // still able to read values from locked table
   $row = $lockResult->fetch_row();
   //unsucsessful lock
@@ -120,12 +123,17 @@ function add_course( $sNum, $cNo)
 		$result3 = mysqli_query($connection, "rollback;");
 		die("Could not lock table");
 	} 
+  // check if past deadline
+  // if deadline < current date/time
+  else if ($row[5] < Date('Y-m-d H:i:s') )  {
+    die("The scheduling deadline for this class has passed");
+  }
   // check if class is full
-  else if ($row[3]>=$row[4]) {
+  else if ($row[4]>=$row[3]) {
     die("The class you're trying to enroll in is full");
   }
   // if all good add course
-	$query = sprintf(add_course_qry, $cNo, $sNum );
+	$query = sprintf(add_course_qry, $cNo, $sNum, $seqID );
 	$result2 = mysqli_query($connection, $query);
 
   // rollback if issues

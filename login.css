@@ -146,7 +146,7 @@ a div{
 th {
   background-color:#CCCCCC;
 }
-#content table tr td:nth-child(6) {
+#content table tr td:last-child {
   text-align:center;
 }
 tr:nth-child(odd)  td {

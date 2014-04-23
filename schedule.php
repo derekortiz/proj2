@@ -5,6 +5,7 @@ include_once './courseCrud.php';
 if(!isset($_SESSION['username'])) {
   header('Location: http://www.cse.msu.edu/~ortizder/proj2/');
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +40,7 @@ rel='stylesheet' type="text/css">
 	  <col width="125px">
 	  <col width="75px">
     <col width="75px">
-    <col width="25px">
+    <col width="214px">
 	  <tr><th>course#</th><th>Course Name</th><th>SequenceID</th><th>seats</th><th>MaxSeats</th><th>Remove Class</th></tr>
   
     <?PHP echo

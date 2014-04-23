@@ -14,6 +14,9 @@ if(isset($_GET['courseNo'])) {
 if(isset($_GET['action'])) {
   $action=$_GET['action'];
 }
+if(isset($_GET['seqID'])) {
+  $seqID=$_GET['seqID'];
+}
 
 if(!isset($_GET['action']) || !isset($_GET['courseNo'])) {
   echo sprintf("Missing action parameters courseNo:%s
@@ -24,7 +27,7 @@ if(!isset($_GET['action']) || !isset($_GET['courseNo'])) {
 
 switch($action) {
   case "add":
-    add_Course($_SESSION['stuNum'], $course);
+    add_Course($_SESSION['stuNum'], $course, $seqID);
     break;
   case "remove":
     remove_course($_SESSION['stuNum'], $course);

@@ -5,6 +5,7 @@ include_once './courseCrud.php';
 if(!isset($_SESSION['username'])) {
   header('Location: http://www.cse.msu.edu/~ortizder/proj2/');
 }
+echo Date('Y-m-d H:i:s');
 ?>
 
 <!DOCTYPE html>
@@ -35,12 +36,13 @@ rel='stylesheet' type="text/css">
   <form action="" method="post">
 	<table>
 	  <col width="30px">
-	  <col width="250px">
+	  <col width="150px">
 	  <col width="100px">
 	  <col width="100px">
     <col width="100px">
+    <col width="100px">
 	  <tr><th>course#</th><th>CourseName</th><th>SequenceID</th><th>seats</th>
-    <th>MaxSeats</th><th>Schedule Class</th></tr>
+    <th>MaxSeats</th><th>Deadline</th><th>Schedule Class</th></tr>
   
     <?PHP make_course_list($_SESSION['stuNum']); ?>
 	

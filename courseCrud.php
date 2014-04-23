@@ -120,16 +120,18 @@ function add_course( $sNum, $cNo, $seqID)
   //unsucsessful lock
 	if( !$lockResult )
 	{
-		$result3 = mysqli_query($connection, "rollback;");
+		$rollback = mysqli_query($connection, "rollback;");
 		die("Could not lock table");
 	} 
   // check if past deadline
   // if deadline < current date/time
   else if ($row[5] < Date('Y-m-d H:i:s') )  {
+		$rollback = mysqli_query($connection, "rollback;");
     die("The scheduling deadline for this class has passed");
   }
   // check if class is full
-  else if ($row[4]>=$row[3]) {
+  else if ($row[4]>=$row[3]) {a
+		$rollback = mysqli_query($connection, "rollback;");
     die("The class you're trying to enroll in is full");
   }
   // if all good add course
